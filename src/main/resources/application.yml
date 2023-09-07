@@ -1,0 +1,25 @@
+#spring.datasource.url=jdbc:mysql://localhost:8081/payment_service
+#spring.datasource.username=sa
+#spring.datasource.password=sa
+#
+#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+#spring.jpa.hibernate.ddl-auto=update
+
+spring:
+  logging:
+    level:
+      liquibase: debug
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: postgres
+    password: sa
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/master.yaml
+
