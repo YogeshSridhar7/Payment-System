@@ -7,13 +7,31 @@
         <preConditions>
             <not>
                 <and>
-                    <columnExists tableName="PAYMENT_TABLE" columnName="Id"/>
-                    <columnExists tableName="PAYMENT_TABLE" columnName="Order Number"/>
-                    <columnExists tableName="PAYMENT_TABLE" columnName="Date"/>
-                    <columnExists tableName="PAYMENT_TABLE" columnName="Total Amount"/>
+                    <columnExists tableName="PAYMENT_TABLE" columnName="ID"/>
+                    <columnExists tableName="PAYMENT_TABLE" columnName="ORDER_NUMBER"/>
+                    <columnExists tableName="PAYMENT_TABLE" columnName="PAYMENT_DATE"/>
+                    <columnExists tableName="PAYMENT_TABLE" columnName="TOTAL_AMOUNT"/>
                 </and>
             </not>
         </preConditions>
+        <createTable tableName="CARD_TABLE">
+            <column name="ID" type="NUMBER" >
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="CARD_HOLDER_NAME" type="VARCHAR(100)" >
+                <constraints nullable="false" />
+            </column>
+            <column name="CARD_NUMBER" type="NUMBER">
+                <constraints nullable="false" />
+            </column>
+            <column name="EXPIRY_DATE" type="DATE">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="CARD_TABLE"/>
+        </rollback>
+
         <createTable tableName="PAYMENT_TABLE">
             <column name="ID" type="NUMBER" >
                 <constraints primaryKey="true" nullable="false" />
@@ -26,6 +44,9 @@
             </column>
             <column name="TOTAL_AMOUNT" type="NUMBER(30,2)">
                 <constraints nullable="true" />
+            </column>
+            <column name="CARD_ID" type="NUMBER">
+                <constraints foreignKeyName="CARD_ID" uniqueConstraintName="fk_ci_id" references="CARD(ID)" />
             </column>
         </createTable>
         <rollback>
