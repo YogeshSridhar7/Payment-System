@@ -26,3 +26,4 @@ public class Card {
     private String expiryDate;
 //    @OneToOne(mappedBy = "CARD")
 }
+
