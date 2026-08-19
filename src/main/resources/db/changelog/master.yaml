@@ -3,7 +3,3 @@ databaseChangeLog:
       file: classpath:db/changelog/db-changelog-0.0.1.xml
       tagDatabase:
         tag: "001"
-  - include:
-      file: classpath:db/changelog/db-changelog-0.0.2.xml
-      tagDatabase:
-        tag: "002"

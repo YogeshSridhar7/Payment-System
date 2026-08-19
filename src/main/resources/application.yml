@@ -7,16 +7,16 @@
 server:
   port : 8081
 spring:
-  logging:
-    level:
-      liquibase: debug
+logging:
+  level:
+    liquibase: info
   datasource:
-    url: jdbc:postgresql://localhost:5433/postgres
-    username: postgres
-    password: sa
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:sa}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

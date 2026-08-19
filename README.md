@@ -1,6 +1,6 @@
 # Payment System
 
-Spring Boot payment service for creating and retrieving payment records. The application is built with Java 17, Spring Boot 3.1.3, Spring Data JPA, PostgreSQL, Liquibase, and MapStruct.
+REST payment-record service built with Java 17, Spring Boot 3.1.3, Spring Data JPA, PostgreSQL, Liquibase, and MapStruct. It demonstrates layered architecture, persistence, database migrations, and HTTP integration testing.
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ The default configuration expects a PostgreSQL instance with:
 | Username | `postgres` |
 | Password | `sa` |
 
-Update `src/main/resources/application.yml` or provide equivalent Spring configuration when these values differ. The application listens on port `8081`.
+These values can be overridden with `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD`. The application listens on port `8081`.
 
 ## Run the Application
 
@@ -34,7 +34,7 @@ If the wrapper has executable permissions, the equivalent command is:
 ./mvnw spring-boot:run
 ```
 
-Liquibase runs the configured changelog during startup. The service is then available at `http://localhost:8081`.
+Liquibase runs the versioned changelog during startup and Hibernate validates the resulting schema. The service is then available at `http://localhost:8081`.
 
 ## Build and Test
 
@@ -42,7 +42,7 @@ Liquibase runs the configured changelog during startup. The service is then avai
 bash mvnw clean verify
 ```
 
-The test suite currently contains a Spring application context smoke test. To run it without cleaning:
+The suite includes unit tests for the service, mapper, and models, controller tests, and a Spring integration test using an in-memory H2 database. To run it without cleaning:
 
 ```bash
 bash mvnw test
@@ -58,6 +58,28 @@ Content-Type: application/json
 ```
 
 The controller accepts an order request containing `paymentDto`; the payment service sets `paymentDate` in UTC and persists the payment.
+
+Example request:
+
+```json
+{
+	"paymentDto": {
+		"orderNumber": 42,
+		"totalAmount": 19.99
+	}
+}
+```
+
+Example response:
+
+```json
+{
+	"id": 1,
+	"orderNumber": 42,
+	"paymentDate": "2026-08-19T12:00:00",
+	"totalAmount": 19.99
+}
+```
 
 ### Get a payment
 
@@ -86,14 +108,14 @@ HTTP request
 - `mapper/` converts between DTOs and JPA entities using MapStruct-generated code.
 - `entity/` contains the `Payment` and `Card` persistence models.
 - `repository/` contains Spring Data repositories.
-- `src/main/resources/db/changelog/` contains Liquibase database migrations.
+- `src/main/resources/db/changelog/` contains the Liquibase database migration and master changelog.
 
 ## Database Schema
 
-The current changelog creates `PAYMENT_TABLE` and `CARD_TABLE`. A payment stores its order number, payment date, total amount, and a one-to-one card relationship. Hibernate is configured with `ddl-auto: update`, while Liquibase is enabled for versioned schema changes.
+The changelog creates `PAYMENT_TABLE` and `CARD_TABLE`, including sequences and the one-to-one payment-to-card foreign key. Liquibase owns schema changes; Hibernate runs in `validate` mode so entity and database drift is detected at startup.
 
-## Current Repository Notes
+## Design Notes
 
-- `master.yaml` includes `db-changelog-0.0.2.xml`, but that file is not currently present in the repository.
-- `PaymentController` imports `OrderDto`, but an `OrderDto` source file is not currently present.
-- The Maven Wrapper is not executable in the current checkout; use `bash mvnw ...` or restore executable permissions with `chmod +x mvnw`.
+- The integration test uses H2 for fast, isolated endpoint testing; PostgreSQL remains the production database.
+- This project stores payment records only. It is not intended to process real card data or handle production payment credentials.
+- The Maven Wrapper may be run with `bash mvnw ...` when executable permissions are unavailable.

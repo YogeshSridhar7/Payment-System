@@ -14,17 +14,19 @@
                 </and>
             </not>
         </preConditions>
+        <createSequence sequenceName="CARD_SEQ" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="PAYMENT_SEQ" startValue="1" incrementBy="1"/>
         <createTable tableName="CARD_TABLE">
-            <column name="ID" type="NUMBER" >
+            <column name="ID" type="BIGINT" >
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="CARD_HOLDER_NAME" type="VARCHAR(100)" >
                 <constraints nullable="false" />
             </column>
-            <column name="CARD_NUMBER" type="NUMBER">
+            <column name="CARD_NUMBER" type="BIGINT">
                 <constraints nullable="false" />
             </column>
-            <column name="EXPIRY_DATE" type="DATE">
+            <column name="EXPIRY_DATE" type="VARCHAR(5)">
                 <constraints nullable="false" />
             </column>
         </createTable>
@@ -33,20 +35,20 @@
         </rollback>
 
         <createTable tableName="PAYMENT_TABLE">
-            <column name="ID" type="NUMBER" >
+            <column name="ID" type="BIGINT" >
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="ORDER_NUMBER" type="NUMBER" >
+            <column name="ORDER_NUMBER" type="BIGINT" >
                 <constraints nullable="false" />
             </column>
             <column name="PAYMENT_DATE" type="TIMESTAMP">
                 <constraints nullable="true" />
             </column>
-            <column name="TOTAL_AMOUNT" type="NUMBER(30,2)">
+            <column name="TOTAL_AMOUNT" type="DECIMAL(30,2)">
                 <constraints nullable="true" />
             </column>
-            <column name="CARD_ID" type="NUMBER">
-                <constraints foreignKeyName="CARD_ID" uniqueConstraintName="fk_ci_id" references="CARD(ID)" />
+            <column name="CARD_ID" type="BIGINT">
+                <constraints foreignKeyName="FK_PAYMENT_CARD" unique="true" references="CARD_TABLE(ID)" />
             </column>
         </createTable>
         <rollback>

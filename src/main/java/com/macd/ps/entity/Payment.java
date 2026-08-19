@@ -27,6 +27,6 @@ public class Payment {
     private double totalAmount;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CARS_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "CARD_ID", referencedColumnName = "ID")
     private Card card;
 }
