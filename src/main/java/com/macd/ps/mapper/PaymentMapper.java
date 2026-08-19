@@ -3,6 +3,7 @@ package com.macd.ps.mapper;
 import com.macd.ps.entity.Payment;
 import com.macd.ps.model.PaymentDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 
@@ -12,5 +13,6 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface PaymentMapper {
     PaymentDto entityToDto(Payment payment);
+    @Mapping(target = "card", ignore = true)
     Payment dtoToEntity(PaymentDto paymentDto);
 }

@@ -1,6 +1,5 @@
 package com.macd.ps.model;
 
-import com.macd.ps.entity.Card;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

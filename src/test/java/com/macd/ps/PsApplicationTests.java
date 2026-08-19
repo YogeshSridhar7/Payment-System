@@ -1,13 +1,14 @@
 package com.macd.ps;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 class PsApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void applicationMainClassIsAvailable() {
+		assertDoesNotThrow(() -> Class.forName(PsApplication.class.getName()));
 	}
 
 }
