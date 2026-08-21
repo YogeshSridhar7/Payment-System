@@ -14,11 +14,19 @@ The default configuration expects a PostgreSQL instance with:
 | --- | --- |
 | Host | `localhost` |
 | Port | `5433` |
-| Database | `postgres` |
-| Username | `postgres` |
-| Password | `sa` |
+| Database | `paymentdb` |
+| Username | `payuser` |
+| Password | `INSERT YOUR PASSWORD` |
 
-These values can be overridden with `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD`. The application listens on port `8081`.
+These values can be overridden with `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD`. In your IDE run configuration, set the environment variables explicitly so Spring can connect to the database:
+
+```bash
+DB_URL=jdbc:postgresql://localhost:5433/paymentdb
+DB_USERNAME=payuser
+DB_PASSWORD='YOUR PASSWORD'
+```
+
+The application listens on port `8081`.
 
 ## Run the Application
 
@@ -53,7 +61,7 @@ bash mvnw test
 ### Create a payment
 
 ```http
-POST /payment/add
+POST: localhost:8081/payment/add
 Content-Type: application/json
 ```
 
@@ -113,6 +121,23 @@ HTTP request
 ## Database Schema
 
 The changelog creates `PAYMENT_TABLE` and `CARD_TABLE`, including sequences and the one-to-one payment-to-card foreign key. Liquibase owns schema changes; Hibernate runs in `validate` mode so entity and database drift is detected at startup.
+
+## Production HTTP Logging
+
+The application includes a centralized HTTP logging filter in `com.macd.ps.config.RequestResponseLoggingFilter`. It captures every incoming request and outgoing response in one place, which makes troubleshooting, monitoring, and auditing easier without scattering log statements across every controller.
+
+The filter records:
+
+- HTTP method and path
+- query parameters
+- response status code
+- duration of the request
+- headers
+- request body and response body
+
+To keep the application production-safe, the filter redacts sensitive values before writing logs. This includes credentials such as passwords, tokens, authorization headers, cookies, and payment-related values such as card numbers and CVVs. This prevents secrets from appearing in application logs while still preserving useful tracing information for debugging and incident analysis.
+
+This makes the app safer for production deployments where logs are often sent to centralized systems or shared with support teams.
 
 ## Design Notes
 

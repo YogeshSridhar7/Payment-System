@@ -24,6 +24,5 @@ public class Card {
     private String cardHolderName;
     private long cardNumber;
     private String expiryDate;
-//    @OneToOne(mappedBy = "CARD")
 }
 
