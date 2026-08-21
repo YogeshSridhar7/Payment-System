@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,7 +26,7 @@ public class Payment {
     private long id;
     private long orderNumber;
     private LocalDateTime paymentDate;
-    private double totalAmount;
+    private BigDecimal totalAmount;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "CARD_ID", referencedColumnName = "ID")

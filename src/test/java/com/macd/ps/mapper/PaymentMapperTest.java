@@ -5,6 +5,8 @@ import com.macd.ps.model.PaymentDto;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -14,7 +16,7 @@ class PaymentMapperTest {
 
     @Test
     void mapsEntityToDto() {
-        Payment payment = Payment.builder().id(7).orderNumber(42).totalAmount(19.99).build();
+        Payment payment = Payment.builder().id(7).orderNumber(42).totalAmount(new BigDecimal("19.99")).build();
 
         PaymentDto result = paymentMapper.entityToDto(payment);
 
@@ -25,7 +27,7 @@ class PaymentMapperTest {
 
     @Test
     void mapsDtoToEntityAndLeavesUnsupportedCardUnset() {
-        PaymentDto paymentDto = PaymentDto.builder().id(7).orderNumber(42).totalAmount(19.99).build();
+        PaymentDto paymentDto = PaymentDto.builder().id(7).orderNumber(42).totalAmount(new BigDecimal("19.99")).build();
 
         Payment result = paymentMapper.dtoToEntity(paymentDto);
 

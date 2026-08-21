@@ -2,6 +2,8 @@ package com.macd.ps.entity;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
@@ -19,11 +21,11 @@ class EntityTest {
     @Test
     void buildsPaymentEntityWithCard() {
         Card card = Card.builder().id(3).build();
-        Payment payment = Payment.builder().id(7).orderNumber(42).totalAmount(19.99).card(card).build();
+        Payment payment = Payment.builder().id(7).orderNumber(42).totalAmount(new BigDecimal("19.99")).card(card).build();
 
         assertEquals(7, payment.getId());
         assertEquals(42, payment.getOrderNumber());
-        assertEquals(19.99, payment.getTotalAmount());
+        assertEquals(new BigDecimal("19.99"), payment.getTotalAmount());
         assertSame(card, payment.getCard());
     }
 }

@@ -6,12 +6,12 @@ import com.macd.ps.model.PaymentDto;
 import com.macd.ps.repository.PaymentRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
@@ -36,8 +36,8 @@ class PaymentServiceTest {
 
     @Test
     void createPaymentSetsUtcDateMapsAndSavesPayment() {
-        PaymentDto paymentDto = PaymentDto.builder().orderNumber(42).totalAmount(19.99).build();
-        Payment entity = Payment.builder().orderNumber(42).totalAmount(19.99).build();
+        PaymentDto paymentDto = PaymentDto.builder().orderNumber(42).totalAmount(new BigDecimal("19.99")).build();
+        Payment entity = Payment.builder().orderNumber(42).totalAmount(new BigDecimal("19.99")).build();
         Payment savedEntity = entity.toBuilder().id(7).build();
         PaymentDto result = paymentDto.toBuilder().id(7).build();
         when(paymentMapper.dtoToEntity(paymentDto)).thenReturn(entity);

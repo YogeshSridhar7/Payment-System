@@ -15,22 +15,15 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-//    @GetMapping("/callClientHello")
-//    public String getHello() {
-//        String uri = "http://localhost:8080/order/hello";
-//        RestTemplate restTemplate = new RestTemplate();
-//        return restTemplate.getForObject(uri, String.class);
-//    }
-
     @PostMapping(value = "/add")
     @ResponseStatus(HttpStatus.OK)
-    public PaymentDto addPayment(@RequestBody OrderDto orderDto, final HttpServletResponse response){
+    public PaymentDto addPayment(@RequestBody OrderDto orderDto){
         return paymentService.createPayment(orderDto.getPaymentDto());
     }
 
     @GetMapping(value = "/get/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PaymentDto getPaymentById(@PathVariable Long id,final HttpServletResponse response) {
+    public PaymentDto getPaymentById(@PathVariable Long id) {
         return paymentService.getPaymentById(id);
     }
 }
